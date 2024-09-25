@@ -1,0 +1,76 @@
+@charset "UTF-8";
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Noto Sans TC", sans-serif;
+  font-size: 16px;
+}
+
+body {
+  background-color: #fff;
+}
+
+a {
+  text-decoration: none;
+}
+
+img,
+iframe {
+  vertical-align: bottom;
+}
+
+ul {
+  list-style: none;
+}
+
+ul li {
+  list-style-type: none;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+}
+
+input {
+  outline: none;
+}
+
+input[type=date] {
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+select,
+input {
+  padding: 4px;
+  border: 1px solid #333;
+  border-radius: 5px;
+  min-height: 1.2em;
+  background-color: #fff;
+  color: #333;
+}
+
+iframe {
+  border: none;
+}
+
+textarea {
+  resize: none;
+}
+
+.hidden-menu-button {
+  padding: 10px 20px;
+  background-color: #fff;
+  /* 全透明背景色 */
+  color: #6200ea;
+  /* 按鈕文字設置為主題紫色 */
+  cursor: pointer;
+  border: 2px solid #6200ea;
+  /* 添加邊框，以便在透明背景時仍能看到按鈕 */
+  border-radius: 4px;
+  font-size: 16px;
+  transition: background-color 0.3s, color 0.3s;
+  /* 增加背景和文字顏色過渡效果 */
+}/*# sourceMappingURL=all.css.map */

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaflet Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="./style/all.css">
+    <style>
+        #map {
+            height: 100vh;
+            width: 100%;
+            /* 設定地圖的高度 */
+        }
+
+        .new-map-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000000;
+            display: none;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .new-map-data-container {
+            max-width: 1366px;
+            width: 100%;
+        }
+
+        .new-map-data-head {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .new-map-port-name {
+            color: #fff;
+            font-size: 40px;
+        }
+
+        .new-map-table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .new-map-thead {
+            background-color: #6200ea;
+            color: white;
+        }
+
+        .new-map-th {
+            text-align: center;
+            padding: 16px;
+            font-size: 24px;
+        }
+
+        .new-map-tr {
+            background-color: #f3f3f3;
+            transition: background-color 0.3s;
+        }
+
+        .new-map-td {
+            text-align: center;
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 24px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="overlay" class="new-map-overlay">
+        <div class="new-map-data-container">
+            <div class="new-map-data-head">
+                <button type="button" class="hidden-menu-button" id="" style="opacity: 0;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <h2 class="new-map-port-name" id="overlay-title">漁港名稱</h2>
+                <button type="button" class="hidden-menu-button" id="hidden-menu-button">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <table class="new-map-table">
+                <thead class="new-map-thead">
+                    <tr>
+                        <th class="new-map-th">在港漁船數</th>
+                        <th class="new-map-th">可容納漁船數</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="new-map-tr">
+                        <td class="new-map-td">
+                            1</td>
+                        <td class="new-map-td">
+                            1</td>
+                    </tr>
+                    <tr class="new-map-tr">
+                        <td class="new-map-td">
+                            2</td>
+                        <td class="new-map-td">
+                            2</td>
+                    </tr>
+                    <tr class="new-map-tr">
+                        <td class="new-map-td">
+                            3</td>
+                        <td class="new-map-td">
+                            3</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+    <div style="border: 1px solid #fff;">
+        <!-- <form action="" style="border: 1px solid #fff;">
+            <label for="">第一類漁港</label>
+            <select name="" id="">
+                <option value="第一類漁港">第一類漁港</option>
+                <option value="第二類漁港">第二類漁港</option>
+            </select>
+            
+            <label for="">縣市</label>
+            <select name="" id=""></select>
+           
+            <label for="">漁港</label>
+            <select name="" id=""></select>
+            <button>送出</button>
+            <a href="">匯出</a>
+        </form> -->
+
+        <div id="map"></div>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const fishingPorts = [
+            {
+                port: "八斗子",
+                type: "第一類",
+                association: "基隆區漁會",
+                harborName: "八斗子漁港",
+                coordinates: [25.142463, 121.791643]
+            },
+            {
+                port: "正濱",
+                type: "第一類",
+                association: "基隆區漁會",
+                harborName: "正濱漁港",
+                coordinates: [25.152564, 121.770165]
+            },
+            {
+                port: "新竹",
+                type: "第一類",
+                association: "新竹區漁會",
+                harborName: "新竹漁港",
+                coordinates: [24.848207, 120.924782]
+            },
+            {
+                port: "梧棲",
+                type: "第一類",
+                association: "臺中區漁會",
+                harborName: "梧棲漁港",
+                coordinates: [24.293568, 120.521497]
+            },
+            {
+                port: "安平",
+                type: "第一類",
+                association: "南市區漁會",
+                harborName: "安平漁港",
+                coordinates: [22.996318, 120.156467]
+            },
+            {
+                port: "前鎮",
+                type: "第一類",
+                association: "高雄區漁會",
+                harborName: "前鎮漁港",
+                coordinates: [22.570380, 120.319283]
+            },
+            {
+                port: "東港鹽埔",
+                type: "第一類",
+                association: "東港區漁會",
+                harborName: "東港鹽埔漁港",
+                coordinates: [22.468008, 120.442588]
+            },
+            {
+                port: "烏石",
+                type: "第一類",
+                association: "頭城區漁會",
+                harborName: "烏石漁港",
+                coordinates: [24.865264, 121.833617]
+            },
+            {
+                port: "南方澳",
+                type: "第一類",
+                association: "蘇澳區漁會",
+                harborName: "南方澳漁港",
+                coordinates: [24.584773, 121.864960]
+            }
+        ];
+
+        // 創建地圖對象
+        var map = L.map('map', {
+            center: [23.9738, 120.9738], // 設定地圖的初始中心點 (台北101座標)
+            zoom: 8, // 設定初始縮放級別
+            zoomControl: false, // 禁用放大縮小按鈕
+            dragging: false, // 禁用拖移
+            scrollWheelZoom: false, // 禁用滾輪縮放
+            doubleClickZoom: false, // 禁用雙擊縮放
+            touchZoom: false, // 禁用觸摸縮放
+            boxZoom: false, // 禁用框選縮放
+            keyboard: false // 禁用鍵盤控制
+        });
+
+        // 添加圖磚圖層（這裡使用 OpenStreetMap 的圖磚）
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19
+        }).addTo(map);
+        // 將每個漁港標註在地圖上
+        // 將每個漁港標註在地圖上，並設定事件監聽
+        fishingPorts.forEach(function (port) {
+            var marker = L.marker(port.coordinates).addTo(map);
+            marker.on('click', function () {
+                document.getElementById('overlay').style.display = 'flex';
+                document.getElementById('overlay-title').textContent = port.harborName;
+                document.getElementById('inPortShips').textContent = port.inPortShips;
+                document.getElementById('maxCapacity').textContent = port.maxCapacity;
+            });
+        });
+
+        // 關閉 overlay 的按鈕
+        document.getElementById('hidden-menu-button').addEventListener('click', function () {
+            document.getElementById('overlay').style.display = 'none';
+        });
+    </script>
+</body>
+
+</html>
