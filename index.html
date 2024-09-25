@@ -213,9 +213,9 @@
             zoom: 8, // 設定初始縮放級別
             zoomControl: false, // 禁用放大縮小按鈕
             dragging: false, // 禁用拖移
-            scrollWheelZoom: false, // 禁用滾輪縮放
-            doubleClickZoom: false, // 禁用雙擊縮放
-            touchZoom: false, // 禁用觸摸縮放
+            // scrollWheelZoom: false, // 禁用滾輪縮放
+            // doubleClickZoom: false, // 禁用雙擊縮放
+            // touchZoom: false, // 禁用觸摸縮放
             boxZoom: false, // 禁用框選縮放
             keyboard: false // 禁用鍵盤控制
         });
@@ -224,7 +224,6 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19
         }).addTo(map);
-        // 將每個漁港標註在地圖上
         // 將每個漁港標註在地圖上，並設定事件監聽
         fishingPorts.forEach(function (port) {
             var marker = L.marker(port.coordinates).addTo(map);
