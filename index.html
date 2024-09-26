@@ -250,29 +250,67 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19
         }).addTo(map);
+
+
+        // 根據縮放級別設定圖標大小
+        function getIconSize(zoomLevel) {
+            const baseWidth = 19; // 基礎寬度
+            const baseHeight = 30; // 基礎高度
+            const scaleFactor = 1.2; // 每級縮放的比例因子 (可根據需求調整)
+            const newWidth = baseWidth * scaleFactor ** (zoomLevel - 8);
+            const newHeight = baseHeight * (newWidth / baseWidth); // 根據原比例計算高度
+            return [newWidth, newHeight];
+        }
+
         var firstTypeIcon = L.icon({
-            iconUrl: './icon/firsticon.png', // 替換為第一類漁港的圖標 URL
-            iconSize: [19, 30], // 圖標大小
-            iconAnchor: [16, 32], // 圖標錨點
-            popupAnchor: [0, -32] // 彈出框錨點
+            iconUrl: './icon/firsticon.png',
+            iconSize: getIconSize(map.getZoom()), // 根據當前縮放級別設置圖標大小
+            iconAnchor: [9, 15], // 調整錨點
+            popupAnchor: [0, -15]
         });
 
         var secondTypeIcon = L.icon({
-            iconUrl: './icon/secondicon.png', // 替換為第二類漁港的圖標 URL
-            iconSize: [19, 30], // 圖標大小
-            iconAnchor: [16, 32], // 圖標錨點
-            popupAnchor: [0, -32] // 彈出框錨點
+            iconUrl: './icon/secondicon.png',
+            iconSize: getIconSize(map.getZoom()), // 根據當前縮放級別設置圖標大小
+            iconAnchor: [9, 15], // 調整錨點
+            popupAnchor: [0, -15]
         });
+        // 儲存所有標記
+        var markers = [];
+
         // 將每個漁港標註在地圖上，並設定事件監聽
         fishingPorts.forEach(function (port) {
-            // 根據類型選擇不同的圖標
             var icon = (port.type === "第一類") ? firstTypeIcon : secondTypeIcon;
-
             var marker = L.marker(port.coordinates, { icon: icon }).addTo(map);
+
+            // 添加到 markers 陣列
+            markers.push({
+                marker: marker,
+                type: port.type
+            });
+
+            // 設置點擊事件顯示 overlay
             marker.on('click', function () {
                 document.getElementById('overlay').style.display = 'flex';
                 document.getElementById('overlay-title').textContent = port.harborName;
-                // 可以在此處設置其他漁港的數據，如在港漁船數和可容納漁船數
+            });
+        });
+        // / 監聽地圖的 zoomend 事件
+        map.on('zoomend', function () {
+            var currentZoom = map.getZoom();
+
+            // 根據當前的縮放級別重新設置圖標大小
+            markers.forEach(function (item) {
+                var newIconSize = getIconSize(currentZoom);
+                var newIcon = L.icon({
+                    iconUrl: item.type === "第一類" ? './icon/firsticon.png' : './icon/secondicon.png',
+                    iconSize: newIconSize,
+                    iconAnchor: [newIconSize[0] / 2, newIconSize[1]], // 根據新大小設置錨點
+                    popupAnchor: [0, -newIconSize[1]]
+                });
+
+                // 設置新的圖標
+                item.marker.setIcon(newIcon);
             });
         });
 
