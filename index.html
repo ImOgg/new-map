@@ -30,12 +30,14 @@
         .new-map-data-container {
             max-width: 1366px;
             width: 100%;
+
         }
 
         .new-map-data-head {
             display: flex;
             justify-content: space-between;
             margin-bottom: 20px;
+            padding: 0 260px;
         }
 
         .new-map-port-name {
@@ -79,6 +81,13 @@
             width: 52%;
         }
 
+        @media (max-width: 1366px) {
+
+            .new-map-data-head {
+                padding: 0 130px;
+            }
+        }
+
         @media (max-width: 768px) {
             .new-map-overlay {
                 padding-left: 8px;
@@ -87,6 +96,10 @@
 
             .new-map-table {
                 width: 100%;
+            }
+
+            .new-map-data-head {
+                padding: 0;
             }
         }
     </style>
