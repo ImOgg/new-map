@@ -44,11 +44,12 @@
         }
 
         .new-map-table {
-            width: 100%;
+            width: 60%;
             border-collapse: collapse;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             overflow: hidden;
+            margin: auto;
         }
 
         .new-map-thead {
@@ -59,7 +60,7 @@
         .new-map-th {
             text-align: center;
             padding: 16px;
-            font-size: 24px;
+            font-size: 36px;
         }
 
         .new-map-tr {
@@ -71,7 +72,22 @@
             text-align: center;
             padding: 12px;
             border-bottom: 1px solid #e0e0e0;
-            font-size: 24px;
+            font-size: 28px;
+        }
+
+        .new-map-table {
+            width: 60%;
+
+        }
+
+        @media (max-width: 768px) {
+            .new-map-overlay {
+                padding-left: 8px;
+                padding-right: 8px;
+            }
+            .new-map-table {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -101,6 +117,20 @@
                             1</td>
                         <td class="new-map-td">
                             1</td>
+                    </tr>
+                </tbody>
+                <thead class="new-map-thead">
+                    <tr>
+                        <th class="new-map-th">使用比率</th>
+                        <th class="new-map-th">剩餘船位</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="new-map-tr">
+                        <td class="new-map-td">
+                            100%</td>
+                        <td class="new-map-td">
+                            0</td>
                     </tr>
                 </tbody>
             </table>
