@@ -85,6 +85,7 @@
                 padding-left: 8px;
                 padding-right: 8px;
             }
+
             .new-map-table {
                 width: 100%;
             }
@@ -154,7 +155,7 @@
             <button>送出</button>
             <a href="">匯出</a>
         </form> -->
-
+       
         <div id="map"></div>
     </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -222,6 +223,13 @@
                 association: "蘇澳區漁會",
                 harborName: "南方澳漁港",
                 coordinates: [24.584773, 121.864960]
+            },
+            {
+                port: "外木山",
+                type: "第二類",
+                association: "基隆區漁會",
+                harborName: "外木山漁港",
+                coordinates: [24.584773, 121.864960]
             }
         ];
 
@@ -242,14 +250,29 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19
         }).addTo(map);
+        var firstTypeIcon = L.icon({
+            iconUrl: './icon/orangeIcon.png', // 替換為第一類漁港的圖標 URL
+            iconSize: [32, 32], // 圖標大小
+            iconAnchor: [16, 32], // 圖標錨點
+            popupAnchor: [0, -32] // 彈出框錨點
+        });
+
+        var secondTypeIcon = L.icon({
+            iconUrl: './icon/purpleIcon.png', // 替換為第二類漁港的圖標 URL
+            iconSize: [32, 32], // 圖標大小
+            iconAnchor: [16, 32], // 圖標錨點
+            popupAnchor: [0, -32] // 彈出框錨點
+        });
         // 將每個漁港標註在地圖上，並設定事件監聽
         fishingPorts.forEach(function (port) {
-            var marker = L.marker(port.coordinates).addTo(map);
+            // 根據類型選擇不同的圖標
+            var icon = (port.type === "第一類") ? firstTypeIcon : secondTypeIcon;
+
+            var marker = L.marker(port.coordinates, { icon: icon }).addTo(map);
             marker.on('click', function () {
                 document.getElementById('overlay').style.display = 'flex';
                 document.getElementById('overlay-title').textContent = port.harborName;
-                document.getElementById('inPortShips').textContent = port.inPortShips;
-                document.getElementById('maxCapacity').textContent = port.maxCapacity;
+                // 可以在此處設置其他漁港的數據，如在港漁船數和可容納漁船數
             });
         });
 
